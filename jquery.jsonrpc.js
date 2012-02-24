@@ -186,7 +186,15 @@
       // Determines the appropriate request URL to call for a request
       _requestUrl: function(url) {
         url = url || this.endPoint;
-        return url + '?tm=' + new Date().getTime()
+
+        var cache = false;
+
+        if (!cache) {
+            url+= (url.split("?").length == 1 ? '?' : '&')
+                + 'tm=' + new Date().getTime();
+        }
+
+        return url;
       },
 
       // Creates an RPC suitable request object

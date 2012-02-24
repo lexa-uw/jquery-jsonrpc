@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    
+
   module("parameter validation");
 
   test("when empty", function() {
@@ -35,6 +35,24 @@ $(document).ready(function(){
     equal(errMsg, "namespace must be a string", "Should raise an error about namespace not being a string");
   });
 
+  test("request url qith get parameters", function() {
+      var testUrl = '/test-url?parameter=value'
+        , result = $.jsonRPC._requestUrl(testUrl);
+
+      equal(
+        result.split('?').length == 2, true,
+        'Url has one "?" with one get parameter'
+      );
+
+      var testUrl = '/test-url'
+        , result = $.jsonRPC._requestUrl(testUrl);
+
+      equal(
+        result.split('?').length == 2, true,
+        'Url has one "?" without get parameters'
+      );
+  });
+
   module("setup");
 
   test("with no args", function() {
@@ -64,7 +82,7 @@ $(document).ready(function(){
     catch(e) {
       errMsg = e;
     }
-    ok(errMsg, "should raise an error"); 
+    ok(errMsg, "should raise an error");
   });
 
   test("with a callback and namespace param set", function() {
@@ -194,21 +212,21 @@ $(document).ready(function(){
     });
   });
 
-  test("with a valid method, no params, and valid callbacks on error", function() {
-    expect(1);
-    stop();
-    $.jsonRPC.endPoint = 'data/invalid.js'
-    $.jsonRPC.request('test', {
-      error: function(json) {
-        ok(json, "should execute error callback");
-        start();
-      },
-      success: function(json) {
-        ok(false, "should not execute success callback");
-        start();
-      }
+    test("with a valid method, no params, and valid callbacks on error", function() {
+        expect(1);
+        stop();
+        $.jsonRPC.endPoint = 'data/invalid.js'
+        $.jsonRPC.request('test', {
+        error: function(json) {
+            ok(json, "should execute error callback");
+            start();
+        },
+        success: function(json) {
+            ok(false, "should not execute success callback");
+            start();
+        }
+        });
     });
-  });
 
   test("with a valid method, valid params, valid callbacks, and an overriden url", function() {
     expect(1);
@@ -226,7 +244,7 @@ $(document).ready(function(){
         start();
       }
     });
-    
+
   });
 
   module("batchRequest");
@@ -240,7 +258,7 @@ $(document).ready(function(){
           [],
           [1],
           [{method:null}],
-          [{method:'test', params:''}],
+          [{method:'test', params:''}]
         ],
         errMsg;
 
@@ -273,7 +291,6 @@ $(document).ready(function(){
         start();
       }
     });
-    
-  });
 
+  });
 });
